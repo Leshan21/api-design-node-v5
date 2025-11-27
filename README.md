@@ -1,26 +1,88 @@
-## API Design with Node.js, v5 Course
+# API Design Node v5
 
-This is a companion repository for the [API Design with Node.js, v5](https://frontendmasters.com/courses/api-design-nodejs-v5) course on Frontend Masters.
-[![Frontend Masters](https://static.frontendmasters.com/assets/brand/logos/full.png)](https://frontendmasters.com/courses/api-design-nodejs-v5)
+A minimal Node.js API server. The entry point starts an HTTP server on port 3000.
 
-### Course Notes
+## Tech Stack
 
-Click [here](https://api-design-with-node-v5.super.site/) to view the course notes on Notion.
+- Node.js
+- TypeScript
+- Express (assumed in `server.ts`)
 
-### Setup Instructions
+## Project Structure
 
-```bash
-# Node.js 23.6.0 or higher is required for this project
-git clone https://github.com/Hendrixer/api-design-node-v5.git
-cd api-design-node-v5
-npm i
+- `src/index.ts`: Boots the server and listens on port 3000.
+- `src/server.ts`: Exports `app` (the Express application).
+
+## How it works
+
+The `index.ts` file imports the Express app from `server.ts` and starts the server:
+
+```ts
+import { app } from './server.ts'
+
+app.listen(3000, () => {
+  console.log('Server is running on http://localhost:3000')
+})
 ```
 
-### Branches
+## Prerequisites
 
-- `main` is the starter project for the course
-- `lesson-X` branches represent checkpoints for starting each section [in the notes](https://api-design-with-node-v5.super.site/). These are only helpful if you wanted to start at a specific section and are not following the course from the beginning.
-- `lesson-X-solution` branches contain the completed code for each section [in the notes](https://api-design-with-node-v5.super.site/). You can `git diff` these branches with the `lesson-X` branches to see what code changed in each section
-- `live-lesson-X` branches are the live coded (solution) branches Scott pushes at the end of each section. They are similar to the `lesson-X-solution` branches.
+- Node.js 18+ (Linux)
+- npm or yarn
 
-**Note:** The `live-lesson-X` branches are the best for debugging issues in your code since they match exactly what Scott codes during the course.
+## Setup
+
+```bash
+# Install dependencies
+npm install
+
+# Build TypeScript (if configured)
+npm run build
+```
+
+## Run (development)
+
+```bash
+# Start with ts-node or a dev script
+npm run dev
+
+# Or run compiled JS
+npm start
+```
+
+## Run (direct with ts-node)
+
+```bash
+npx ts-node src/index.ts
+```
+
+## Environment
+
+- Default port: 3000
+- Visit: http://localhost:3000
+
+## Scripts (example)
+
+Add these to `package.json` if not present:
+
+```json
+{
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  }
+}
+```
+
+## Testing
+
+```bash
+npm test
+```
+
+## Next Steps
+
+- Document routes in `server.ts` (e.g., `/health`, `/api/*`)
+- Add error handling and logging
+- Add environment configuration (PORT via `.env`)
