@@ -3,7 +3,7 @@ import express from 'express';
 const app = express();
 
 app.get('/health', (req, res) => { // req is what the client sends, res is what we send back from the server
-  res.json({ message: 'API is healthy' }).status(200); // Corrected order of method calls
+  res.send("<button>click</button>").status(200); // Corrected order of method calls
 })
 
 export { app }; // Export the app for use in other modules
