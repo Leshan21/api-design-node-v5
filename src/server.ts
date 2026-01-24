@@ -1,5 +1,8 @@
 import express from 'express';
 import { fa } from 'zod/locales';
+import userRoutes from './routes/userRoutes.ts';
+import authRoutes from './routes/authRoutes.ts';
+import habitRoutes from './routes/habitRoutes.ts';
 
 const app = express();
 
@@ -7,10 +10,12 @@ app.get('/health', (req, res) => { // req is what the client sends, res is what 
   res.send("<button>click</button>").status(200); // Corrected order of method calls
 })
 
-app.post('/cake/:name/:id', (req, res) => { 
-  res.json(req.params);
-}
-)
+// mounting the routes
+app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/habits', habitRoutes);
+
+
 
 export { app }; // Export the app for use in other modules
 
