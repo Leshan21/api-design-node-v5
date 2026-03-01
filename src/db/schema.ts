@@ -9,8 +9,9 @@ import {
 } from 'drizzle-orm/pg-core'
 import { relations } from 'drizzle-orm'
 import { createDeflate } from 'zlib'
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 
-export const user = pgTable('user', {
+export const users = pgTable('user', {
   id: uuid('id').primaryKey().defaultRandom(),
   email: varchar('email', { length: 255 }).notNull().unique(),
   username: varchar('username', { length: 50 }).notNull().unique(),
@@ -26,7 +27,7 @@ export const habits = pgTable('habits', {
   id: uuid('id').primaryKey().defaultRandom(),
   userId: uuid('user_id')
     .notNull()
-    .references(() => user.id, { onDelete: 'cascade' }), // foreign key to user table
+    .references(() => users.id, { onDelete: 'cascade' }), // foreign key to user table
   name: varchar('name', { length: 100 }).notNull(),
   description: text('description'),
   frequency: varchar('frequency', { length: 20 }).notNull(),
@@ -63,3 +64,43 @@ export const habitTags = pgTable('habit_tags', {
     .notNull()
     .references(() => tags.id, { onDelete: 'cascade' }),
 })
+
+
+export const userRelations = relations(users, ({many}) => ({
+  habits: many(habits), // 
+
+}))
+
+export const habitsRelations = relations(habits, ({one, many}) => ({
+  user: one(users, {
+    fields: [habits.userId],
+    references: [users.id],
+  }),
+  entries: many(entries),
+  habitTags: many(habitTags),
+}))
+
+
+export const entriesRelations = relations(entries, ({one})=> ({
+    habit: one(habits, {
+        fields: [entries.habitsId],
+        references: [habits.id],
+    })
+}))
+
+
+export const tagsRelations = relations(tags, ({many}) => ({
+    habitTags: many(habitTags),
+}))
+
+
+export const habitTagsRelations = relations(habitTags, ({one}) => ({
+    habit: one(habits, {
+        fields: [habitTags.habitsId],
+        references: [habits.id],
+    }),
+    tag: one(tags, {
+        fields: [habitTags.tagId],
+        references: [tags.id],
+    })
+}))
