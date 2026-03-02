@@ -9,7 +9,7 @@ export interface JWTPayload {
   email: string
 }
 
-export const generateJWT = async (payload: JWTPayload) => {
+export const generateToken = async (payload: JWTPayload) => {
   const secret = env.JWT_SECRET
   const secretKey = createSecretKey(secret, 'utf-8')
 
